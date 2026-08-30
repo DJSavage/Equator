@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kelvinvale.Api/Kelvinvale.Api.csproj" />
+    <Project Path="src/Kelvinvale.Core/Kelvinvale.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Kelvinvale.Tests/Kelvinvale.Tests.csproj" />
+  </Folder>
+</Solution>

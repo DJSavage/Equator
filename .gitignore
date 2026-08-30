@@ -1,0 +1,22 @@
+## .NET
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+.vs/
+
+## Rider / VS Code
+.idea/
+.vscode/
+
+## Test / coverage
+[Tt]est[Rr]esults/
+*.trx
+coverage*.xml
+coverage*.json
+
+## OS
+.DS_Store
+Thumbs.db
