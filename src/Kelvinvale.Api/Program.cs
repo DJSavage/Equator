@@ -1,6 +1,7 @@
 using Kelvinvale.Api.Auth;
 using Kelvinvale.Api.Errors;
 using Kelvinvale.Api.Infrastructure;
+using Kelvinvale.Api.OpenApi;
 using Kelvinvale.Core;
 using Kelvinvale.Core.Auth;
 using Kelvinvale.Core.Persistence;
@@ -21,7 +22,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .WriteTo.Console(new RenderedCompactJsonFormatter()));
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options => options.AddDocumentTransformer<CallerSecuritySchemeTransformer>());
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 builder.Services.AddHttpContextAccessor();
