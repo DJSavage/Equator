@@ -12,8 +12,9 @@ dotnet test                               # 74 tests: auth negative paths, produ
 dotnet run --project src/Kelvinvale.Api   # http://localhost:5080
 ```
 
-`GET /health` is anonymous. In Development the OpenAPI doc is at `/openapi/v1.json` and a Scalar UI
-at `/scalar`. Persistence is in-memory SQLite, seeded on startup with two advisers, four customers
+`GET /health` is anonymous. In Development the OpenAPI doc is at `/openapi/v1.json`, with Swagger UI
+at `/swagger` and Scalar at `/scalar` (both served from that one document). Persistence is in-memory
+SQLite, seeded on startup with two advisers, four customers
 and a few products (`src/Kelvinvale.Core/Persistence/SeedIds.cs`, used by `Kelvinvale.Api.http`).
 
 ## Authorisation model

@@ -60,18 +60,28 @@ using (var scope = app.Services.CreateScope())
 
 app.UseExceptionHandler();
 app.UseSerilogRequestLogging();
+
+if (app.Environment.IsDevelopment())
+{
+    // API docs, before authentication so the fallback "must be authenticated" policy does not gate them.
+    app.MapOpenApi().AllowAnonymous();
+    app.MapScalarApiReference().AllowAnonymous();
+
+    // Swagger UI served from the built-in OpenAPI document (no second doc generator).
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Kelvinvale Wealth API v1");
+        options.RoutePrefix = "swagger";
+        options.DocumentTitle = "Kelvinvale Wealth API";
+    });
+}
+
 app.UseAuthentication();
 app.UseMiddleware<CorrelationMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapHealthChecks("/health").AllowAnonymous();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi().AllowAnonymous();
-    app.MapScalarApiReference().AllowAnonymous();
-}
 
 app.Run();
 
