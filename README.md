@@ -14,8 +14,23 @@ dotnet run --project src/Kelvinvale.Api   # http://localhost:5080
 
 `GET /health` is anonymous. In Development the OpenAPI doc is at `/openapi/v1.json`, with Swagger UI
 at `/swagger` and Scalar at `/scalar` (both served from that one document). Persistence is in-memory
-SQLite, seeded on startup with two advisers, four customers
-and a few products (`src/Kelvinvale.Core/Persistence/SeedIds.cs`, used by `Kelvinvale.Api.http`).
+SQLite, seeded on startup with the identities below (`src/Kelvinvale.Core/Persistence/SeedIds.cs`,
+also wired into `Kelvinvale.Api.http`).
+
+## Seeded identities
+
+Authenticate by sending `X-Caller-Id` with `X-Caller-Role` set to the exact string `Adviser` or
+`Customer` (case-sensitive). Each adviser sees only their own customers; each customer sees only
+their own records.
+
+| Role | Who | `X-Caller-Id` | Records |
+|------|-----|---------------|---------|
+| Adviser | Aisha Khan | `3f9c1b4e-7d21-4a55-9b02-1c6e8ad47f10` | advises Grace, Daniel |
+| Adviser | Tom Reed | `a1d2c3b4-5e6f-4a7b-8c9d-0e1f2a3b4c5d` | advises Priya, Sam |
+| Customer | Grace Okafor | `11111111-1111-4111-8111-111111111111` | ISA `a5a5a5a1-0000-4000-8000-000000000001` (£5,000 subscribed), GIA `…0002` |
+| Customer | Daniel Bright | `22222222-2222-4222-8222-222222222222` | SIPP `a5a5a5a2-0000-4000-8000-000000000001` |
+| Customer | Priya Nair | `33333333-3333-4333-8333-333333333333` | ISA `a5a5a5a3-0000-4000-8000-000000000001` (£19,500 of £20,000 used) |
+| Customer | Sam Ellis | `44444444-4444-4444-8444-444444444444` | none — aged 16, for the SIPP minimum-age path |
 
 ## Authorisation model
 
