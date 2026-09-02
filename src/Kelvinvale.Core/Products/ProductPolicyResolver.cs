@@ -18,9 +18,14 @@ public sealed class ProductPolicyResolver : IProductPolicyResolver
 {
     private readonly IReadOnlyDictionary<ProductType, IProductPolicy> _policies;
 
+    //resolves the product policies registered in CoreServiceCollectionExtensions to an IEnumerable
     public ProductPolicyResolver(IEnumerable<IProductPolicy> policies)
     {
         _policies = policies.ToDictionary(p => p.Type);
+        //returns the list as a lookup by Type:
+        //[Isa]: {Kelvinvale.Core.Products.IsaPolicy}
+        //[Gia]: { Kelvinvale.Core.Products.GiaPolicy}
+        //[Sipp]: { Kelvinvale.Core.Products.SippPolicy}
     }
 
     public bool IsKnown(ProductType type) => _policies.ContainsKey(type);

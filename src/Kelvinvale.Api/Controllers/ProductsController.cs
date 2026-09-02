@@ -17,9 +17,12 @@ public sealed class ProductsController(
     PlaceInstructionHandler placeInstruction) : ApiControllerBase(authorization)
 {
     /// <summary>View a single product.</summary>
+    /// No Authorize policy is enforced here, as both roles can call it.
+    /// Ownership is the gate
     [HttpGet("products/{productId:guid}")]
     public async Task<ActionResult<ProductResponse>> GetProduct(Guid productId, CancellationToken ct)
     {
+        //load the product from the Async Load method 
         var product = await Load(productId, ct, includeHoldings: false, includeInstructions: false);
         if (product is null || !await OwnsCustomerAsync(product.Customer))
         {
@@ -76,8 +79,20 @@ public sealed class ProductsController(
         return Created($"/api/v1/products/{productId}/instructions", InstructionResponse.From(instruction));
     }
 
+    /// <summary>
+    /// Loads a product by product id
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <param name="ct"></param>
+    /// <param name="includeHoldings"></param>
+    /// <param name="includeInstructions"></param>
+    /// <returns></returns>
     private async Task<Product?> Load(Guid productId, CancellationToken ct, bool includeHoldings, bool includeInstructions)
     {
+        //db read only query
+        //disabled tracking to avoid overhead of change traking
+
+        //build the query
         IQueryable<Product> query = db.Products.AsNoTracking().Include(p => p.Customer);
         if (includeHoldings)
         {
@@ -89,6 +104,7 @@ public sealed class ProductsController(
             query = query.Include(p => p.Instructions);
         }
 
+        //run and return the query
         return await query.FirstOrDefaultAsync(p => p.Id == productId, ct);
     }
 }

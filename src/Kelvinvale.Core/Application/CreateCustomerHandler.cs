@@ -14,6 +14,10 @@ public sealed record CreateCustomerCommand(
 /// <summary>Advisers add new customers. The customer is assigned to the calling adviser.</summary>
 public sealed class CreateCustomerHandler(KelvinvaleDbContext db, IAuditWriter audit)
 {
+    // Create new customer
+    // Add to db
+    // Create audit entry
+    // Save changes
     public async Task<Customer> HandleAsync(CreateCustomerCommand command, ActorContext actor, CancellationToken ct)
     {
         var customer = new Customer

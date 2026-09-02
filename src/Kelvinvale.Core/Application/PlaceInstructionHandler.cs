@@ -30,6 +30,7 @@ public sealed class PlaceInstructionHandler(
     {
         // Idempotency: a replay of the same client reference yields the same outcome.
         var existing = product.Instructions.FirstOrDefault(i => i.ClientReference == command.ClientReference);
+        //just return the existing Instruction if not null and not status Rejected
         if (existing is not null)
         {
             if (existing.Status == InstructionStatus.Rejected)
@@ -41,6 +42,7 @@ public sealed class PlaceInstructionHandler(
 
             return existing;
         }
+
 
         if (command.AmountPence <= 0)
         {

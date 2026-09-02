@@ -23,6 +23,7 @@ public sealed class CanAccessCustomerHandler
         var callerId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
         var role = context.User.FindFirstValue(ClaimTypes.Role);
 
+        //pass the callerId, Role and Customer object to CustomerAccess.IsAllowed to check whether the requested action is allowed
         if (Guid.TryParse(callerId, out var id) && CustomerAccess.IsAllowed(id, role, resource))
         {
             context.Succeed(requirement);

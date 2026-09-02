@@ -18,9 +18,11 @@ public sealed class OpenProductHandler(
 {
     public async Task<Product> HandleAsync(Customer customer, ProductType type, ActorContext actor, CancellationToken ct)
     {
+        //retrieve the policy for the provided product type
         var policy = policies.For(type); // throws DomainException(400) for an unknown type
         var today = DateOnly.FromDateTime(clock.GetUtcNow().UtcDateTime);
 
+        //now check against the product's policy EnsureCanOpen method to see whether this product type can be opened for this customer
         var eligibility = policy.EnsureCanOpen(new OpenProductContext(customer, type, today));
         if (!eligibility.Succeeded)
         {

@@ -19,9 +19,13 @@ public static class CoreServiceCollectionExtensions
         services.AddScoped<IAuditWriter, AuditWriter>();
 
         // One line per product type. Adding a fourth type does not touch anything else.
+        // All product policies are registered against IProductPolicy
+        // DI resolves IEnumerable<IProductPolicy> to all three
+        // This is surfaced in ProductPolicyResolver
         services.AddScoped<IProductPolicy, IsaPolicy>();
         services.AddScoped<IProductPolicy, GiaPolicy>();
         services.AddScoped<IProductPolicy, SippPolicy>();
+
         services.AddScoped<IProductPolicyResolver, ProductPolicyResolver>();
 
         services.AddScoped<CreateCustomerHandler>();
