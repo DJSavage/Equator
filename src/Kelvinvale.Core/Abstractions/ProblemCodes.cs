@@ -13,4 +13,5 @@ public static class ProblemCodes
     public const string ProductUnknownType = "product.unknown-type";
     public const string InstructionInvalidAmount = "instruction.invalid-amount";
     public const string InstructionRefusedPreviously = "instruction.refused-previously";
+    public const string AdviserUnknown = "adviser.unknown";
 }

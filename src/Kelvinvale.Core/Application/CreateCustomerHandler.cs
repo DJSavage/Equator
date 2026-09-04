@@ -1,6 +1,7 @@
 using Kelvinvale.Core.Abstractions;
 using Kelvinvale.Core.Domain;
 using Kelvinvale.Core.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kelvinvale.Core.Application;
 
@@ -41,7 +42,21 @@ public sealed class CreateCustomerHandler(KelvinvaleDbContext db, IAuditWriter a
             AuditOutcome.Accepted,
             detail: $"Adviser {actor.ActorId} created customer {customer.Id}."));
 
-        await db.SaveChangesAsync(ct);
+        try
+        {
+            await db.SaveChangesAsync(ct);
+        }
+        catch (DbUpdateException)
+        {
+            // The AdviserId foreign key is the backstop for a caller whose role claims "Adviser"
+            // but whose id does not belong to a real adviser row (the stub trusts the header, not
+            // the database - see README "Authorisation model").
+            throw new DomainException(new DomainError(
+                ProblemCodes.AdviserUnknown,
+                "No adviser exists with the calling id.",
+                new Dictionary<string, object?> { ["adviserId"] = actor.ActorId }));
+        }
+
         return customer;
     }
 }
