@@ -12,7 +12,7 @@ namespace Kelvinvale.Api.Infrastructure;
 /// 1. Structured logging, tracing, and debugging. The correlation id is a stable identifier for a request
 /// 2. The audit trail from ApiControllerBase.Actor
 /// ActorContext flows into every handler, and AuditEvents.From(actor, …) copies actor.CorrelationId onto the AuditEntry row.
-/// So each row in the audit table records the correlation id of the request that produced it —
+/// So each row in the audit table records the correlation id of the request that produced it -
 /// you can join a log line to the exact audit entry it caused, and vice versa.
 /// 3. The response header, so clients can log the correlation id for support and debugging./// 
 /// </summary>

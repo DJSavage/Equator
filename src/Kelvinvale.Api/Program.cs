@@ -29,7 +29,7 @@ builder.Services.AddOpenApi(options => options.AddDocumentTransformer<CallerSecu
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomainExceptionHandler>();
 
-//registers the IHttpContextAccessor service so we can access the current HttpContext from any class in the application —
+//registers the IHttpContextAccessor service so we can access the current HttpContext from any class in the application -
 //not just controllers or middleware.
 builder.Services.AddHttpContextAccessor();
 
